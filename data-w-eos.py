@@ -13,106 +13,42 @@ defined_x_lim = (-3, 103)  # Example limits, adjust as needed
 defined_y_lim = (120, 170)  # Example limits, adjust as needed
 
 # Define your list of excel filenames
-excel_files = ["diamond2023.xlsx", "desy2023-HT.xlsx", "ballaran2012.xlsx", "catalli2011.xlsx","wolf2015.xlsx", "tange2012.xlsx"]
+excel_files = ["FILENAME1.xlsx", "FILENAME2.xlsx"]
 
 file_config = {
-    "diamond2023.xlsx": {
-        "mgsio3": [
+    "FILENAME1.xlsx": {
+        "SHEET1": [
             {
                 "x_column": "pressure",
-                "y_columns": ["vol_brg"],
+                "y_columns": ["vo"],
                 "styles": [{"color": "b", "edgecolor": 'black', "marker": "o", "size": 115}],
-                "labels": ["This Study - MgSiO$_3$"]  # Corresponding labels for "y_columns"
+                "labels": ["LABEL1$"]  # Corresponding labels for "y_columns"
             },
         ],
-        "fealo3": [
+        "SHEET2": [
             {
                 "x_column": "pressure",
-                "y_columns": ["vol_brg"],
+                "y_columns": ["vol"],
                 "styles": [{"color": "r", "edgecolor": 'black', "marker": "o", "size": 115}],
-                "labels": ["This Study - (Mg$_{0.68}$,Fe$_{0.32}$)(Si$_{0.70}$,Al$_{0.3}$)O$_3$"]
+                "labels": ["LABEL2$"]
             },
         ]
     },
-    #"desy2023-HT.xlsx": {
-    #    "HT-comp": [
-    #        {
-    #            "x_column": "pressure",
-    #            "y_columns": ["vol"],
-    #            "styles": [{"color": "orange", "edgecolor": 'k', "marker": "o", "size": 55}],
-    #            "labels": ["This study - HT: (Mg,Fe)(Si,Al)O$_3$ Brg w/ Garnet"]
-    #        },
-    #    ],
-    #},
-    "ballaran2012.xlsx": {
-        "H3004": [
-            {
-               "x_column": "pressure",
-                "y_columns": ["vol"],
-                "styles": [{"color": "white", "edgecolor": 'blue', "marker": "<", "size": 105}],
-                "labels": ["Boffa Ballaran et al. 2012 - MgSiO$_3$ (H3004)"]
-            },
-        ],
-        "H3014": [
-            {
-               "x_column": "pressure",
-                "y_columns": ["vol"],
-                "styles": [{"color": "white", "edgecolor": 'green', "marker": "<", "size": 105}],
-                "labels": ["Boffa Ballaran et al. 2012 - (Mg$_{0.96}$,Fe$_{0.04}$)SiO$_3$ (H3104)"]
-            },
-        ],
-        "S4253": [
-            {
-               "x_column": "pressure",
-                "y_columns": ["vol"],
-                "styles": [{"color": "white", "edgecolor": 'red', "marker": "<", "size": 105}],
-                "labels": ["Boffa Ballaran et al. 2012 - Mg$_{0.60}$Fe$_{0.03}^{2+}$Fe$_{0.38}^{3+}$Si$_{0.62}$Al$_{"
-                           "0.36}$O$_3$ (S4253)"]
-            },
-        ],
-    },
-    "catalli2011.xlsx": {
-        "mgfesialo3": [
+    "FILENAME2.xlsx": {
+        "SHEET1": [
             {
                 "x_column": "pressure",
                 "y_columns": ["vol"],
-                "styles": [{"color": "white", "edgecolor": 'red', "marker": "^", "size": 105}],
-                "labels": ["Catalli et al. 2011 - (Mg$_{0.88}$,Fe$_{0.13}$)(Si$_{0.88}$,Al$_{0.11}$)O$_3$"]
+                "styles": [{"color": "orange", "edgecolor": 'k', "marker": "o", "size": 55}],
+                "labels": ["LABEL3"]
             },
         ],
     },
-    "wolf2015.xlsx": {
-        "ID1-300K": [
-            {
-                "x_column": "pressure",
-                "y_columns": ["vol"],
-                "styles": [{"color": "white", "edgecolor": 'green', "marker": "s", "size": 45}],
-                "labels": ["Wolf et al. 2015 - RT: (Mg$_{0.88}$,Fe$_{0.13}$)SiO$_3$"]
-            },
-        ],
-        #"ID2-LH": [
-        #    {
-        #        "x_column": "pressure",
-        #        "y_columns": ["vol"],
-        #        "styles": [{"color": "white", "edgecolor": 'green', "marker": "s", "size": 25}],
-        #        "labels": ["Wolf et al. 2015 - LH: (Mg$_{0.88}$,Fe$_{0.13}$)SiO$_3$"]
-        #    },
-        #],
-    },
-    #"tange2012.xlsx": {
-    #    "HT-tange": [
-    #        {
-    #            "x_column": "pressure",
-    #            "y_columns": ["vol"],
-    #            "styles": [{"color": "white", "edgecolor": 'blue', "marker": ">", "size": 25}],
-    #            "labels": ["Tange et al. 2012 - LH: MgSiO$_3$"]
-    #        },
-    #    ],
-    #},
 }
 
 
 # MASTER PLOT FUNCTION
+# This will create a PV plot for ALL the data sets listed above
 def plot_sheet(df, configs, x_lim=None, y_lim=None):
     """
         Plot data from a given dataframe based on specified configurations.
@@ -139,7 +75,7 @@ def plot_sheet(df, configs, x_lim=None, y_lim=None):
         if y_lim:
             plt.ylim(y_lim)
 
-        # plt.title("Bridgmanite")
+        # plt.title("TITLE")
         plt.xlabel("Pressure (GPa)", size=14)
         plt.ylabel("Volume ($\AA^3$)", size=14)
 
@@ -168,17 +104,14 @@ for excel_file, sheets in file_config.items():
 
 
 plt.legend(loc="upper left", bbox_to_anchor=(1, 1))
-############### plt.savefig("alldata-w-lit_plot.jpeg", bbox_inches='tight', dpi=900)
+plt.savefig("alldata_plot.jpeg", bbox_inches='tight', dpi=900)
 # Display the plot after plotting data from all sheets and files
 plt.tight_layout()
 ############## plt.show(dpi=900)
 
 
 # BEGIN EOS FITTING
-
 # Birch-Murnaghan equation of state
-
-
 def birch_murnaghan(V, V0, K0, K0_prime):
     """
     Birch-Murnaghan 3rd order equation of state.
@@ -189,7 +122,6 @@ def birch_murnaghan(V, V0, K0, K0_prime):
 
 
 # Vinet equation of state (kept for future reference or usage)
-
 def vinet(V, V0, K0, K0_prime):
     x = (V / V0) ** (1 / 3)
     eta = 3 / 2 * (K0_prime - 1)
@@ -234,47 +166,31 @@ all_handles, all_labels = plt.gca().get_legend_handles_labels()
 
 # Here we define the datasets for which we wish to compute and plot EOS
 eos_datasets = [
-    {"filename": "diamond2023.xlsx",
-     "sheet": "mgsio3",
+    {"filename": "FILENAME1.xlsx",
+     "sheet": "SHEET1",
      "pressure_col": "pressure",
      "volume_col": "vol_brg",
      "color": "mediumblue",
      "linestyle": "-"
-     # "fixed_K0_prime": 4,
-     # "label": "This Study - MgSiO$_3$"
+     # "fixed_K0_prime": 4, # if needed 
+     # "label": "N/A$"
      },
-    {"filename": "ballaran2012.xlsx",
-     "sheet": "H3004",
+    {"filename": "FILENAME2.xlsx",
+     "sheet": "SHEET1",
      "pressure_col": "pressure",
      "volume_col": "vol",
      "color": "blue",
      "linestyle": ":",
-     # "label": "Boffa Ballaran et al. 2012 - H3004"
+     # "label": "N/A"
      },
-    # {"filename": "desy2023-HT.xlsx",
-     # "sheet": "HT-comp",
+    # {"filename": "FILENAME3.xlsx",
+     # "sheet": "SHEET1",
      # "pressure_col": "pressure",
      # "volume_col": "vol",
      # "color": "orange",
      # "linestyle": ":",
-     # "label": "This Study - HT (Mg,Fe)(Si,Al)O$_3$ Brg w/ Garnet"
+     # "label": "N/A"
      # },
-    {"filename": "diamond2023.xlsx",
-     "sheet": "fealo3",
-     "pressure_col": "pressure",
-     "volume_col": "vol_brg",
-     "color": "red",
-     "linestyle": "-",
-     # "label": "This Study - (Mg$_{0.68}$,Fe$_{0.32}$)(Si$_{0.70}$,Al$_{0.3}$)O$_3$"
-     },
-    {"filename": "catalli2011.xlsx",
-     "sheet": "mgfesialo3",
-     "pressure_col": "pressure",
-     "volume_col": "vol",
-     "color": "red",
-     "linestyle": ":",
-     # "label": "Catalli et al. 2011 - (Mg$_{0.88}$,Fe$_{0.13}$)(Si$_{0.88}$,Al$_{0.11}$)O$_3$"
-     }
     # Add more datasets as needed...
 ]
 
@@ -306,5 +222,5 @@ plt.plot(27.1, 151.572, 'o', color='purple', markersize=11, markeredgecolor='bla
 plt.plot(38.6, 147.110, 'o', color='purple', markersize=11, markeredgecolor='black')
 plt.legend(frameon=False, fontsize=14, loc="lower left")
 plt.tight_layout()
-plt.savefig("output_plot_with_eos.jpeg", bbox_inches='tight', dpi=900)
+plt.savefig("output_eos.jpeg", bbox_inches='tight', dpi=900)
 plt.show(dpi=900)
