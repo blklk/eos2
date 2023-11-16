@@ -17,7 +17,7 @@ defined_x_lim = (-3, 103)  # Example limits, adjust as needed
 defined_y_lim = (120, 170)  # Example limits, adjust as needed
 
 # Define your list of excel filenames
-excel_files = ["FILENAME1.xlsx", "FILENAME2.xlsx"]
+excel_files = ["FILENAME1.xlsx", "FILENAME2.xlsx", "FILENAME3.xlsx"]
 
 file_config = {
     "FILENAME1.xlsx": {
@@ -26,7 +26,7 @@ file_config = {
                 "x_column": "pressure",
                 "y_columns": ["vo"],
                 "styles": [{"color": "b", "edgecolor": 'black', "marker": "o", "size": 115}],
-                "labels": ["LABEL1$"]  # Corresponding labels for "y_columns"
+                "labels": ["LABEL1"]  # Corresponding labels for "y_columns"
             },
         ],
         "SHEET2": [
@@ -34,7 +34,7 @@ file_config = {
                 "x_column": "pressure",
                 "y_columns": ["vol"],
                 "styles": [{"color": "r", "edgecolor": 'black', "marker": "o", "size": 115}],
-                "labels": ["LABEL2$"]
+                "labels": ["LABEL2"]
             },
         ]
     },
@@ -222,8 +222,11 @@ for spine in ax.spines.values():
 ax.tick_params(axis='x', which='both', top=True, direction='in', length=5, labelsize=13)
 ax.tick_params(axis='y', which='both', right=True, direction='in', length=5, labelsize=13)
 # plt.legend(loc="upper left", bbox_to_anchor=(1, 1), frameon=False)
-plt.plot(27.1, 151.572, 'o', color='purple', markersize=11, markeredgecolor='black', label='DESY 2023')
-plt.plot(38.6, 147.110, 'o', color='purple', markersize=11, markeredgecolor='black')
+
+# If there is data to plot that is not in a file:
+# plt.plot(x, y, 'o', color='purple', markersize=11, markeredgecolor='black', label='LABEL4')
+# plt.plot(x, y, 'o', color='purple', markersize=11, markeredgecolor='black')
+
 plt.legend(frameon=False, fontsize=14, loc="lower left")
 plt.tight_layout()
 plt.savefig("output_eos.jpeg", bbox_inches='tight', dpi=900)
