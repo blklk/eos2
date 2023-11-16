@@ -1,3 +1,7 @@
+# by: Britany Kulka, 2023
+# britany.kulka@earth.ox.ac.uk
+# University of Oxford
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -107,7 +111,7 @@ plt.legend(loc="upper left", bbox_to_anchor=(1, 1))
 plt.savefig("alldata_plot.jpeg", bbox_inches='tight', dpi=900)
 # Display the plot after plotting data from all sheets and files
 plt.tight_layout()
-############## plt.show(dpi=900)
+plt.show(dpi=900)
 
 
 # BEGIN EOS FITTING
