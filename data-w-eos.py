@@ -2,6 +2,8 @@
 # britany.kulka@earth.ox.ac.uk
 # University of Oxford
 
+
+# module imports
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -10,16 +12,20 @@ import matplotlib.ticker as ticker
 import warnings
 from scipy.optimize import OptimizeWarning
 
+# Set default font to Arial for all plots
 plt.rcParams['font.family'] = 'Arial'
 
-# Define your x and y axis limits outside of the file_config:
-defined_x_lim = (-3, 103)  # Example limits, adjust as needed
-defined_y_lim = (120, 170)  # Example limits, adjust as needed
+# Define axis limits for plots
+# defined_x_lim = (x1, x2)  # Adjust as needed for the x-axis
+# defined_y_lim = (y1, y2)  # Adjust as needed for the y-axis
 
-# Define your list of excel filenames
+# List of Excel files to be processed
 excel_files = ["FILENAME1.xlsx", "FILENAME2.xlsx", "FILENAME3.xlsx"]
 
+# Configuration for each Excel file, including sheet names, columns, and plot styles
+# This is ONLY for the master plot, NOT the EOS plot.
 file_config = {
+    # Detailed structure for each file and sheet
     "FILENAME1.xlsx": {
         "SHEET1": [
             {
@@ -55,8 +61,14 @@ file_config = {
 # This will create a PV plot for ALL the data sets listed above
 def plot_sheet(df, configs, x_lim=None, y_lim=None):
     """
-        Plot data from a given dataframe based on specified configurations.
-        """
+    Create plots for each dataset in the dataframe.
+    Inputs:
+        - df: DataFrame containing the data
+        - configs: Configuration for plotting (columns, styles, labels)
+        - x_lim, y_lim: Optional limits for the x and y axes
+    Output:
+        - Generates plots according to the specified configurations
+    """
     for config in configs:
         x_data = df[config["x_column"]]
         for y_col, style, label in zip(config["y_columns"], config["styles"], config["labels"]):
@@ -100,8 +112,9 @@ def plot_sheet(df, configs, x_lim=None, y_lim=None):
 plt.figure(figsize=(8, 6))
 
 
-# The loop to plot data from the files and sheets based on file_config
+# Loop through each Excel file and its sheets to plot data based on file_config
 for excel_file, sheets in file_config.items():
+# Code for processing each sheet
     for sheet, configs in sheets.items():
         data = pd.read_excel(excel_file, sheet_name=sheet)
         plot_sheet(data, configs, defined_x_lim, defined_y_lim)
@@ -119,17 +132,24 @@ plt.show(dpi=900)
 def birch_murnaghan(V, V0, K0, K0_prime):
     """
     Birch-Murnaghan 3rd order equation of state.
+    Used for fitting pressure-volume data.
+    NOTE: 
+        - If K0_prime = 4, then this is set in eos_data with the correct data set.
     """
-    # K0_prime = 4
     return (3 / 2) * K0 * ((V0 / V) ** (7 / 3) - (V0 / V) ** (5 / 3)) * (
                 1 + 3 / 4 * (K0_prime - 4) * ((V0 / V) ** (2 / 3) - 1))
 
 
 # Vinet equation of state (kept for future reference or usage)
 def vinet(V, V0, K0, K0_prime):
+    """
+    Vinet equation of state.
+    An alternative EOS model, kept for reference or future use.
+    """
     x = (V / V0) ** (1 / 3)
     eta = 3 / 2 * (K0_prime - 1)
     return 3 * K0 * (1 - x) * np.exp(eta * (1 - x))
+
 
 
 def calculate_and_plot_eos(df, pressure_col, volume_col, color, linestyle, K0_prime=None, extrapolate=0.2, num_points=100):
@@ -201,7 +221,9 @@ eos_datasets = [
 plt.figure(figsize=(8, 6))
 
 
+# Fit equation of state to the data and plot the results
 for dataset in eos_datasets:
+    # Code for fitting and plotting
     data = pd.read_excel(dataset["filename"], sheet_name=dataset["sheet"])
     if "fixed_K0_prime" in dataset:
         calculate_and_plot_eos(data, dataset["pressure_col"], dataset["volume_col"], dataset["color"],
@@ -227,6 +249,7 @@ ax.tick_params(axis='y', which='both', right=True, direction='in', length=5, lab
 # plt.plot(x, y, 'o', color='purple', markersize=11, markeredgecolor='black', label='LABEL4')
 # plt.plot(x, y, 'o', color='purple', markersize=11, markeredgecolor='black')
 
+# Final adjustments to the plot layout, legend, and saving the plot to a file
 plt.legend(frameon=False, fontsize=14, loc="lower left")
 plt.tight_layout()
 plt.savefig("output_eos.jpeg", bbox_inches='tight', dpi=900)
